@@ -3,6 +3,9 @@ class GameStats:
 
     def __init__(self,ai_game):
         '''iniitialize statistics'''
+        # High score should nver be reset.
+        self.high_score =0
+
         self.settings=ai_game.settings
         self.reset_stats()
 
