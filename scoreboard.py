@@ -6,6 +6,7 @@ class Scoreboard:
 
     def __init__(self, ai_game):
         ''' Initilize scorekeeping attributes.'''
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
@@ -16,6 +17,20 @@ class Scoreboard:
         # Prepare the initial score image.
         self.prep_score()
         self.prep_high_score()
+        self.prep_level()
+
+
+    def prep_level(self):
+        ''' Turn the level intoa rendered image.'''
+        level_str = str(self.stats.level)
+        self.level_image = self.font.render(level_str, True,
+                     self.text_color,self.settings.bg_color)
+
+        #position the level blew the score.
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right
+        self.level_rect.top = self.score_rect.bottom + 10
+
 
     def prep_score(self):
         '''Turn the score into a rendered image.'''
@@ -50,5 +65,15 @@ class Scoreboard:
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
+
+
+    def prep_ships(self):
+        '''Show how many ships are left'''
+        self.ships = Group()
+        for ship_number in range(self.stats.ships_left):
+            ship = Ship(self.ai_game)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.y = 10
+            self.ships.add(ship)
 
 
